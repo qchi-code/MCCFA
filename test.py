@@ -8,7 +8,7 @@ import SimpleITK as sitk
 import torch.backends.cudnn as cudnn
 import torch.optim
 from torch.utils.data import DataLoader
-from models.fewshot import FewShotSeg
+from models.fewshot_GMRD import FewShotSeg
 from dataloaders.datasets import TestDataset
 from dataloaders.dataset_specifics import *
 from utils import *
@@ -49,7 +49,7 @@ def main(_run, _config, _log):
     _log.info(f'Create model...')
     model = FewShotSeg()
     model.cuda()
-    model.load_state_dict(torch.load(_config['reload_model_path'], map_location='cpu'))
+    # model.load_state_dict(torch.load(_config['reload_model_path'], map_location='cpu'))
 
     _log.info(f'Load data...')
     data_config = {
@@ -86,15 +86,13 @@ def main(_run, _config, _log):
         # Skip BG class.
         if label_name == 'BG':
             continue
-        elif (not np.intersect1d([label_val], _config['test_label'])):
+        elif (not np.intersect1d([label_val], _config['test_label'])):  # if 如果label_val不在_config['test_label']这个列表中，则执行下面的代码块
             continue
 
         _log.info(f'Test Class: {label_name}')
 
         # Get support sample + mask for current class.
         support_sample = test_dataset.getSupport(label=label_val, all_slices=False, N=_config['n_part'])
-        # support_sample['image']: (3, 3, 256, 256)
-        # support_sample['label']: (3, 256, 256)
 
         test_dataset.label = label_val
 
@@ -133,9 +131,11 @@ def main(_run, _config, _log):
                         _pred_s, _, _ = model([support_image_s], [support_fg_mask_s], [query_image_s[[i]]],
                                            train=False)  # 1 x 2 x H x W
                         query_pred_s.append(_pred_s)
-                    query_pred_s = torch.cat(query_pred_s, dim=0)
-                    query_pred_s = query_pred_s.argmax(dim=1).cpu()  # C x H x W
+                    query_pred_s = torch.cat(query_pred_s, dim=0)  # [9, 2, 256, 256]  [9, 2, 256, 256]
+                    query_pred_s = query_pred_s.argmax(dim=1).cpu()  # C x H x W   [9, 256, 256]
+
                     query_pred[idx_[sub_chunck]:idx_[sub_chunck + 1]] = query_pred_s
+
 
                 # Record scores.
                 scores.record(query_pred, query_label)
@@ -162,14 +162,11 @@ def main(_run, _config, _log):
     _log.info(f'Final results...')
     _log.info(f'Mean IoU: {class_iou}')
     _log.info(f'Mean Dice: {class_dice}')
-
     def dict_Avg(Dict):
-        L = len(Dict)  # 取字典中键值对的个数
-        S = sum(Dict.values())  # 取字典中键对应值的总和
-        A = S / L
+        A = sum(Dict.values()) / len(Dict)
         return A
+    res = dict_Avg(class_dice)
 
-    _log.info(f'Whole mean Dice: {dict_Avg(class_dice)}')
-
+    _log.info(f'Total Mean Dice: {res}')
     _log.info(f'End of validation.')
     return 1
