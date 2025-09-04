@@ -1,7 +1,7 @@
 # MCCFA
 
 ### Abstract
-  This project is about research implementation of FSMIS. The complete code will be made public after the accepted paper.
+  This project is about research implementation of FSMIS.
 ### Dependencies
 Please install following essential dependencies:
 ```
