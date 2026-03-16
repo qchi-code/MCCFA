@@ -1,7 +1,7 @@
 # MCCFA
 
 ### Abstract
-  This project is about research implementation of FSMIS.
+  Few-shot medical image segmentation (FSMIS) aims to achieve accurate segmentation with limited labeled samples, mitigating the burden of costly and time-consuming manual annotation. Existing FSMIS methods typically adopt a self-supervised strategy that leverages image superpixels as pseudo-masks. However, we observe that these pseudo-masks often contain numerous disruptive regions, termed `discrete fragments'. These fragmented artifacts introduce noise into training supervision and compromise the reliability of feature learning. Furthermore, current methods primarily focus on enhancing representation capability on the support side, neglecting sufficient pixel-level interaction between support and query features. To address these challenges, we propose a novel framework, Mask Correction and Contrastive Feature Aggregation (MCCFA). Specifically, we introduce a mask correction algorithm that effectively eliminates discrete fragments from pseudo-masks, thereby restoring their structural integrity. Subsequently, we design a Query Feature Aggregation Transformer (QFAT), which utilizes the corrected masks to transfer semantic cues from support to query features. Finally, to suppress background interference, we develop a Foreground-Background Separation (FBS) module that aggregates positive samples of similar prototypes while distancing them from negative background samples via contrastive learning. Extensive experiments on three benchmark datasets demonstrate that our method consistently outperforms state-of-the-art approaches.
 ### Dependencies
 Please install following essential dependencies:
 ```
