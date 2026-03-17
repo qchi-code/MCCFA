@@ -29,7 +29,7 @@ Download:
 Pre-processing is performed according to [Ouyang et al.](https://github.com/cheng-01037/Self-supervised-Fewshot-Medical-Image-Segmentation/tree/2f2a22b74890cb9ad5e56ac234ea02b9f1c7a535) and we follow the procedure on their github repository.
 
 ### Model weights
-The trained model weights are available at the following link for download and evaluation: [Google Drive](). In addition, although MCA can be performed jointly during training, we also provide the pre-processed datasets and corrected pseudo-masks here: [PRE_DATASET](https://drive.google.com/file/d/1DR_87spEOIA5Uqy4-xTkS4_I48n_hBwE/view?usp=drive_link). Please note that you need to manually download and extract the files. 
+The trained model weights are available at the following link for download and evaluation: [Google Drive](https://drive.google.com/file/d/1u_xNZ2OawBO82tu2Xzk9SaQvO1nJSQ-X/view?usp=drive_link). In addition, although MCA can be performed jointly during training, we also provide the pre-processed datasets and corrected pseudo-masks here: [PRE_DATASET](https://drive.google.com/file/d/1DR_87spEOIA5Uqy4-xTkS4_I48n_hBwE/view?usp=drive_link). Please note that you need to manually download and extract the files. 
 
 ### Training
 1. Compile `./data/supervoxels/felzenszwalb_3d_cy.pyx` with cython (`python ./data/supervoxels/setup.py build_ext --inplace`) and run `./data/supervoxels/generate_supervoxels.py` 
