@@ -2,6 +2,10 @@
 
 ### Abstract
   Few-shot medical image segmentation (FSMIS) aims to achieve accurate segmentation with limited labeled samples, mitigating the burden of costly and time-consuming manual annotation. Existing FSMIS methods typically adopt a self-supervised strategy that leverages image superpixels as pseudo-masks. However, we observe that these pseudo-masks often contain numerous disruptive regions, termed `discrete fragments'. These fragmented artifacts introduce noise into training supervision and compromise the reliability of feature learning. Furthermore, current methods primarily focus on enhancing representation capability on the support side, neglecting sufficient pixel-level interaction between support and query features. To address these challenges, we propose a novel framework, Mask Correction and Contrastive Feature Aggregation (MCCFA). Specifically, we introduce a mask correction algorithm that effectively eliminates discrete fragments from pseudo-masks, thereby restoring their structural integrity. Subsequently, we design a Query Feature Aggregation Transformer (QFAT), which utilizes the corrected masks to transfer semantic cues from support to query features. Finally, to suppress background interference, we develop a Foreground-Background Separation (FBS) module that aggregates positive samples of similar prototypes while distancing them from negative background samples via contrastive learning. Extensive experiments on three benchmark datasets demonstrate that our method consistently outperforms state-of-the-art approaches.
+
+### Mask correction algorithm
+Our mask correction algorithm is a simple yet effective strategy that can be easily integrated into existing FSMIS pipelines. In practice, it only requires adding a largest_connected_component function at the end of datasets.py and slightly modifying the corresponding pseudo-mask preprocessing code so that each superpixel slice is filtered before the size check. This lightweight implementation makes the method straightforward to reproduce and adopt in other frameworks.
+
 ### Dependencies
 Please install following essential dependencies:
 ```
